@@ -1,3 +1,6 @@
+import time
+
+
 def two_sum_brute(lst, n):
     result = set()
     for i in lst:
@@ -38,5 +41,12 @@ def two_sum_caching(lst, n):
     return list(unique_pairs)
 
 
+def time_taker(lst):
+    x = time.time()
+    two_sum_caching(lst, 5)
+    timedifference = x - time.time()
+    return timedifference
+
+
 lst = [1, 19, 29, 11, 23, 10, 27, -3, -5, 19, -22, 28, -16, 9, -23]
-print(two_sum_caching(lst, 5))
+print(time_taker(lst))
