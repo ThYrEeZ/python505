@@ -1,8 +1,8 @@
 import random
 
 
-def random_list(fron, to, number):
+def random_list(size, number):
     lst = []
-    for i in range(number):
-        lst.append(random.randint(fron, to))
+    for _ in range(number):
+        lst.append(random.randint(-size, size))
     return lst
