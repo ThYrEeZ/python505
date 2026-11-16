@@ -16,7 +16,8 @@ def two_sum_pointers(lst, n):
     while fp < bp:
         p = lst[fp] + lst[bp]
         if p == n:
-            result.add(p)
+            result.add(tuple((lst[fp], lst[bp])))
+            fp += 1
         elif p > n:
             bp -= 1
         elif p < n:
@@ -24,5 +25,18 @@ def two_sum_pointers(lst, n):
     return result
 
 
+def two_sum_caching(lst, n):
+    unique_pairs = set()
+    cach = set()
+    for v1 in lst:
+        v2 = n - v1
+        if v2 in cach:
+            if v2 < v1:
+                v1, v2 = v2, v1
+            unique_pairs.add((v1, v2))
+        cach.add(v1)
+    return list(unique_pairs)
+
+
 lst = [1, 19, 29, 11, 23, 10, 27, -3, -5, 19, -22, 28, -16, 9, -23]
-print(two_sum_pointers(lst, 5))
+print(two_sum_caching(lst, 5))
