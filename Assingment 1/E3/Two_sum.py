@@ -3,8 +3,8 @@ import time
 
 def two_sum_brute(lst, n):
     result = set()
-    for i in lst:
-        for j in lst:
+    for i in range(len(lst)):
+        for j in range(i + 1, len(lst)):
             if i + j == n:
                 p = tuple(sorted((i, j)))
                 result.add(p)
@@ -19,7 +19,7 @@ def two_sum_pointers(lst, n):
     while fp < bp:
         p = lst[fp] + lst[bp]
         if p == n:
-            result.add(tuple((lst[fp], lst[bp])))
+            result.add((lst[fp], lst[bp]))
             fp += 1
         elif p > n:
             bp -= 1
