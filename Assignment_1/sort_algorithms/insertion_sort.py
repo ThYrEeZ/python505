@@ -9,7 +9,3 @@ def insertion_sort(lst):
 
         lst[j + 1] = key
     return lst
-
-
-lst = [6, -7, 9, -12, -2, 5]
-print(insertion_sort(lst))

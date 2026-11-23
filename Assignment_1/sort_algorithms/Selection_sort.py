@@ -8,7 +8,3 @@ def selction_sort(lst):
                 # och hittar det minsta bland de
         lst[i], lst[index] = lst[index], lst[i]  # Sätter mista på sin plats
     return lst
-
-
-lst = [6, -7, 9, -12, -2, 5]
-print(selction_sort(lst))

@@ -1,6 +1,3 @@
-import Assignment_1.Util.random_list as random_list
-
-
 def radix_sort(lst):
     if not lst:
         return lst
@@ -10,8 +7,8 @@ def radix_sort(lst):
     # 2 sortering
 
     def radix_sort_positives(arr):
-        if not lst:
-            return lst
+        if not arr:
+            return arr
         max_value = max(arr)
         exp = 1
         while max_value // exp > 0:
@@ -39,6 +36,3 @@ def radix_sort(lst):
     sorted_positives = radix_sort_positives(positives)
 
     return [-x for x in reversed(sorted_negatives)] + sorted_positives
-
-
-print(radix_sort(random_list.random_list(100, 100)))

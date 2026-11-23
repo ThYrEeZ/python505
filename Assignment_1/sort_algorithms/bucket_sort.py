@@ -1,6 +1,3 @@
-import Assignment_1.Util.random_list as random_list
-
-
 def bucket_sort(lst):
     if not lst:
         return lst
@@ -24,6 +21,3 @@ def bucket_sort(lst):
         for value in bucket:
             new_lst.append(value)
     return new_lst
-
-
-print(bucket_sort(random_list.random_list(100, 100)))

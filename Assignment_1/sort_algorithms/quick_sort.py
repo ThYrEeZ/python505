@@ -54,7 +54,3 @@ def partition_mean(lst):
         else:
             right += [val]
     return pivot, left, right
-
-
-lst = [6, -7, 9, -12, -2, 5]
-print(quick_sort_mean(lst))
