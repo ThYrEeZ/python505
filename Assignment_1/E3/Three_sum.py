@@ -1,7 +1,3 @@
-import time
-
-
-
 def three_sum_brute(lst, n):
     result = set()
 
@@ -44,5 +40,3 @@ def three_sum_caching(lst, n):
                 unique_pairs.add(tuple(sorted((lst[v1], lst[v2], v3))))
             cach.add(lst[v2])
     return unique_pairs
-
-def time_test(function):

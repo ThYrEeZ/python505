@@ -1,4 +1,4 @@
-import random_list
+import Assignment_1.Util.random_list as random_list
 
 
 def bucket_sort(lst):
