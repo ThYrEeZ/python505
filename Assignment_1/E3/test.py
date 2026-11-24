@@ -15,7 +15,7 @@ from sort_algorithms import bucket_sort
 from sort_algorithms import radix_sort
 
 
-def lin_reg(x, y):
+def lin_reg(x, y):  # denna funktion tar reda på lutningen av en graf
     n = len(x)
     sx = sum(x)
     sy = sum(y)
@@ -40,46 +40,46 @@ def test_sort(algs, lists, runs):
         sizes.append(len(lst))
 
     results = {}
-    for alg in algs:  # loopar igenom alla alg
+    for alg in algs:
         all_runs = []
         for lst in lists:  # loopar alla random listor
             run_times = []
             for _ in range(runs):  # loopar flera gånger, för att säkerställa
                 run_times.append(time_test_sort(lst, alg))
             all_runs.append(run_times)
-        results[alg.__name__] = all_runs
+        results[alg.__name__] = all_runs  # sparar med namet
         print(alg.__name__, "klar")
     return sizes, results
 
 
 def test_three_sum(algs, sizes_for, repeat, target):
     results = []
-    for name, threesum in algs:
+    for name, threesum in algs:  # kör alla algs repeat gånger
         for run in range(1, repeat + 1):
             for size in sizes_for(name):
                 data = random_list.random_list(size)
                 before = time.time()
-                threesum(data, target)
+                threesum(data, target)  # kör själva algen
                 results.append((name, size, time.time() - before, run))
     return results
 
 
-def group_three_sum(results, names):
+def group_three_sum(results, names):  # grupperar tider med alg o list sorlek
     grouped = {}
     for name, size, run_time, run in results:
         grouped.setdefault(name, {}).setdefault(size, []).append(run_time)
     return {name: grouped[name] for name in names}
 
 
-def three_sum_averages(grouped):
+def three_sum_averages(grouped):  # Räknar ut medeltiden för varje liststorlek
     averages = {}
     for name, by_size in grouped.items():
-        sizes = sorted(by_size)
+        sizes = sorted(by_size)  # o sorterar
         averages[name] = (sizes, [sum(by_size[s]) / len(by_size[s]) for s in sizes])
     return averages
 
 
-def plot_sort_average(sizes, results, title="Sortering - snittid"):
+def plot_sort_average(sizes, results, title="Sortering - snittid"):  # graf för snitt på sort
     for name in results:
         averages = []
         for run_times in results[name]:
@@ -93,7 +93,7 @@ def plot_sort_average(sizes, results, title="Sortering - snittid"):
 
 
 def plot_sort_all_runs(sizes, results, title="Sortering - alla körningar"):
-    colors = ["tab:blue", "tab:orange", "tab:green", "tab:red"]
+    colors = ["tab:blue", "tab:orange", "tab:green", "tab:red"]  # graf på alla runs i sort
 
     for color_index, name in enumerate(results):
         color = colors[color_index % len(colors)]
@@ -111,7 +111,7 @@ def plot_sort_all_runs(sizes, results, title="Sortering - alla körningar"):
     plt.show()
 
 
-def plot_sort_loglog(sizes, results):
+def plot_sort_loglog(sizes, results):  # graf för lutning på sort
     for name, all_runs in results.items():
         averages = [
             sum(run_times) / len(run_times)
@@ -130,7 +130,7 @@ def plot_sort_loglog(sizes, results):
     plt.show()
 
 
-def plot_three_sum_average(averages):
+def plot_three_sum_average(averages):  # graf för snitt tre sum
     for name, (sizes, avg) in averages.items():
         plt.plot(sizes, avg, marker="o", label=name)
     plt.title("Three-sum - snittid")
@@ -140,14 +140,14 @@ def plot_three_sum_average(averages):
     plt.show()
 
 
-def plot_three_sum_loglog(averages):
+def plot_three_sum_loglog(averages):  # graf på tre sum lutning
     for name, (sizes, avg) in averages.items():
         _, exponent = lin_reg(
             [math.log(size) for size in sizes],
             [math.log(time) for time in avg],
         )
         plt.loglog(sizes, avg, marker="o", label=f"{name} (k={exponent:.3f})")
-        # Lutningen i log-log-diagrammet ≈ exponenten i O(n^k)
+
         print(f"{name}: uppskattad exponent ≈ {exponent:.2f}")
     plt.title("Three-sum - log-log")
     plt.xlabel("Listlängd (logaritmisk skala)")
@@ -156,7 +156,7 @@ def plot_three_sum_loglog(averages):
     plt.show()
 
 
-def plot_three_sum_all_runs(grouped, repeat):
+def plot_three_sum_all_runs(grouped, repeat):  # graf alla tre sum
     for name, by_size in grouped.items():
         sizes = sorted(by_size)
         for run in range(repeat):
@@ -171,7 +171,7 @@ def plot_three_sum_all_runs(grouped, repeat):
 
 
 def run_three_sum():
-    target = 0
+    target = 0  # Vilken summa vi vill ha o hur många gånger den körs
     repeat = 5
     size = range(2500, 10000, 500)
     brute_size = range(100, 1000, 50)
@@ -179,48 +179,48 @@ def run_three_sum():
                   ("pointers", Three_sum.three_sum_pointers),
                   ("caching", Three_sum.three_sum_caching)]
 
-    def sizes_for(name):
+    def sizes_for(name):  # Om brute force kör mindre storlek
         return brute_size if name == "brute" else size
-
+    # hanterar data o sparar den
     results = test_three_sum(algs_three, sizes_for, repeat, target)
     grouped = group_three_sum(results, [name for name, _ in algs_three])
     averages = three_sum_averages(grouped)
-
+    # skickar till plot
     plot_three_sum_average(averages)
     plot_three_sum_loglog(averages)
     plot_three_sum_all_runs(grouped, repeat)
 
 
-def run_sorting():
+def run_sorting():  # Kör sort n^2
     algs_n2 = [Bubble_sort.bubble_sort,
                insertion_sort.insertion_sort,
                Selection_sort.selction_sort]
     lists_n2 = [random_list.random_list(length) for length in range(2000, 9001, 1000)]
     sort_sizes, sort_results = test_sort(algs_n2, lists_n2, 3)
-
+    # lite storlekar på listor och sparar data samt skickar vidare till plot
     plot_sort_average(sort_sizes, sort_results)
     plot_sort_all_runs(sort_sizes, sort_results)
     plot_sort_loglog(sort_sizes, sort_results)
 
 
-def run_sorting_nlogn():
+def run_sorting_nlogn():  # kör sort n*log(n) i tidskompexitet
     algs_nlogn = [merge_sort_slow.merge_sort_slow,
                   quick_sort.quick_sort_slow]
     lists_nlogn = [random_list.random_list(length) for length in range(20000, 200001, 20000)]
     sort_sizes, sort_results = test_sort(algs_nlogn, lists_nlogn, 3)
-
+    # Sparar data och skickar vidare
     plot_sort_average(sort_sizes, sort_results)
     plot_sort_all_runs(sort_sizes, sort_results)
     plot_sort_loglog(sort_sizes, sort_results)
 
 
-def run_sorting_comparison():
-    algs = [quick_sort.quick_sort_mean,
+def run_sorting_speed():  # kör de absolut snabbaste
+    algs = [quick_sort.quick_sort_mean,  # den förbättrade quick med snitt
             bucket_sort.bucket_sort,
             radix_sort.radix_sort]
     lists = [random_list.random_list(length) for length in range(100000, 500001, 100000)]
     sort_sizes, sort_results = test_sort(algs, lists, 3)
-
+    # spara data o skickar vidare
     plot_sort_average(
         sort_sizes,
         sort_results,
@@ -232,7 +232,7 @@ def main():
     run_three_sum()
     run_sorting()
     run_sorting_nlogn()
-    run_sorting_comparison()
+    run_sorting_speed()
 
 
-main()
+main()  # Drar igång festen yippie
